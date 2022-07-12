@@ -1,0 +1,54 @@
+{
+  "type": "micro_service",
+  "service_name": "text",
+  "bind_connection": true,
+  "paths": [
+    {
+      "code_path_id": 0,
+      "probability": 100,
+      "stages": [
+        {
+          "stage_name": "epoll",
+          "code_path_id": 0,
+          "path_stage_id": 0,
+          "stage_id": 0,
+          "blocking": false,
+          "batching": true,
+          "socket": false,
+          "epoll": true,
+          "ngx_proc": false,
+          "net": false,
+          "chunk": false,
+          "recv_time_model": {
+            "type": "expo",
+            "latency": 1500
+          },
+          "scale_factor": 0.55,
+          "critical_section": false
+        },
+        {
+          "stage_name": "proc",
+          "code_path_id": 0,
+          "path_stage_id": 1,
+          "stage_id": 1,
+          "blocking": false,
+          "batching": false,
+          "socket": false,
+          "epoll": false,
+          "ngx_proc": false,
+          "net": true,
+          "chunk": false,
+          "recv_time_model": {
+            "type": "expo",
+            "latency": 19000
+          },
+          "scale_factor": 0.4,
+          "critical_section": false
+        }
+      ],
+      "num_stages": 2
+    }
+  ],
+  "base_freq": 2600,
+  "cur_freq": 2600
+}

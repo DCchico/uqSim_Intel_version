@@ -81,7 +81,7 @@ def get_qps_range():
 		return CUR_QPS
 	else:
 		CUR_QPS = (int(CUR_QPS/QPS_RANGE_STEP) + 1) * QPS_RANGE_STEP
-		print('CUR_QPS (ranged) = ', CUR_QPS)
+		print 'CUR_QPS (ranged) = ', CUR_QPS
 		return CUR_QPS
 
 class GraphPoint:
@@ -155,20 +155,20 @@ class OnlineGraph:
 			if min_val < 0 or cur_val < min_val:
 				min_val = cur_val
 				CUR_OPT_POINT = point
-		print('CUR_OPT_POINT: ', CUR_OPT_POINT.show())
+		print 'CUR_OPT_POINT: ', CUR_OPT_POINT.show()
 		return CUR_OPT_POINT
 
 	def show_graph(self):
-		print('graph for end2end_tail in [', self.min_lat, ', ', self.max_lat, ']:') 
+		print 'graph for end2end_tail in [', self.min_lat, ', ', self.max_lat, ']:' 
 		for point in self.graph:
-			print(point.show())
+			print point.show()
 
 def init_online_graphs(target):
 	global ONLINE_GRAPHS
 	global QOS_SLOT_NUM
 	global QOS_SLOT_STEP
 	QOS_SLOT_STEP = float(target)/float(QOS_SLOT_NUM)	
-	print('QOS_SLOT_STEP = ', QOS_SLOT_STEP)
+	print 'QOS_SLOT_STEP = ', QOS_SLOT_STEP
 	i = 0
 	lower_bound = 0.0
 	upper_bound = 0.0
@@ -188,9 +188,9 @@ def get_graph_idx(end2end_lat):
 def insert_new_point(new_point):
 	global ONLINE_GRAPHS
 	global QOS_SLOT_STEP
-	print('insert_new_point')
+	print 'insert_new_point'
 	idx = get_graph_idx(new_point.end2end_lat)
-	print('inserted idx = ', idx)
+	print 'inserted idx = ', idx
 	explore = False
 	if not ONLINE_GRAPHS[idx].witnessed:
 		ONLINE_GRAPHS[idx].witnessed = True
@@ -202,9 +202,9 @@ def insert_new_point(new_point):
 		# set the probability to closest one down
 		lower_idx = idx - 1
 		while lower_idx >= 0:
-			print('test explore in insert_new_point, lower_idx = ', lower_idx)
+			print 'test explore in insert_new_point, lower_idx = ', lower_idx
 			if len(ONLINE_GRAPHS[lower_idx].graph) > 0:
-				print('prob = ', ONLINE_GRAPHS[lower_idx].probability)
+				print 'prob = ', ONLINE_GRAPHS[lower_idx].probability
 				ONLINE_GRAPHS[idx].probability = ONLINE_GRAPHS[lower_idx].probability
 				break
 			lower_idx -= 1
@@ -213,28 +213,28 @@ def insert_new_point(new_point):
 	ONLINE_GRAPHS[idx].insert(new_point)
 	# ONLINE_GRAPHS[idx].show_graph()
 
-	print('whole graph probability: ')
+	print 'whole graph probability: '
 	i = QOS_SLOT_NUM - 1
 	while i >= 0:
 		if ONLINE_GRAPHS[i].witnessed:
-			print('graph idx: ', i, '[', i*QOS_SLOT_STEP, ', ', (i+1)*QOS_SLOT_STEP, '], prob = ', ONLINE_GRAPHS[i].probability, 'graph_size = ', len(ONLINE_GRAPHS[i].graph))
+			print 'graph idx: ', i, '[', i*QOS_SLOT_STEP, ', ', (i+1)*QOS_SLOT_STEP, '], prob = ', ONLINE_GRAPHS[i].probability, 'graph_size = ', len(ONLINE_GRAPHS[i].graph)
 		i -= 1
-	print('insert done')
+	print 'insert done'
 	return explore
 
 def probablistic_accpet(prob):
 	assert prob >= 0.0
 	assert prob <= 1.0
 	val = random.uniform(0.0, 1.0)
-	print('prob = ', prob)
-	print('generated val = ', val)
+	print 'prob = ', prob
+	print 'generated val = ', val
 	if val > prob:
 		return False
 	else:
 		return True
 
 def adjust_graph_probability(idx, sched_suc):
-	print('adjust_graph_probability')
+	print 'adjust_graph_probability'
 	global QOS_SLOT_NUM
 	global QOS_SLOT_STEP
 	global ONLINE_GRAPHS
@@ -242,18 +242,18 @@ def adjust_graph_probability(idx, sched_suc):
 	if sched_suc:
 		while idx >= 0:
 			ONLINE_GRAPHS[idx].probability = min(1.0, ONLINE_GRAPHS[idx].probability * 1.1)
-			print('sched_suc graph idx ', idx, ' [', idx*QOS_SLOT_STEP, ', ', (idx+1)*QOS_SLOT_STEP, '], graph_size = ', len(ONLINE_GRAPHS[idx].graph), ', prob = ', ONLINE_GRAPHS[idx].probability)
+			print 'sched_suc graph idx ', idx, ' [', idx*QOS_SLOT_STEP, ', ', (idx+1)*QOS_SLOT_STEP, '], graph_size = ', len(ONLINE_GRAPHS[idx].graph), ', prob = ', ONLINE_GRAPHS[idx].probability
 			idx -= 1
 	else:
 		while idx < QOS_SLOT_NUM:
 			ONLINE_GRAPHS[idx].probability /= 4.0
-			print('sched_fail graph idx ', idx, ' [', idx*QOS_SLOT_STEP, ', ', (idx+1)*QOS_SLOT_STEP, '], graph_size = ', len(ONLINE_GRAPHS[idx].graph), ', prob = ', ONLINE_GRAPHS[idx].probability)
+			print 'sched_fail graph idx ', idx, ' [', idx*QOS_SLOT_STEP, ', ', (idx+1)*QOS_SLOT_STEP, '], graph_size = ', len(ONLINE_GRAPHS[idx].graph), ', prob = ', ONLINE_GRAPHS[idx].probability
 			idx += 1
 
 # @sched_suc, if scheduling according to current optimal graph meets qos
 # @return True if acceptable graph is found, otherwise False
 def get_optimal_graph(sched_suc):
-	print('get_optimal_graph')
+	print 'get_optimal_graph'
 	global ONLINE_GRAPHS
 	global QOS_SLOT_NUM
 	global CUR_GRAPH_IDX
@@ -310,7 +310,7 @@ def get_optimal_graph(sched_suc):
 
 # choose one dimension to slow down
 def random_slowdown(end2end_lat):
-	print('random_slowdown')
+	print 'random_slowdown'
 	global APP_SERVER
 	global APP_FREQ_VEC
 	global APP_CORE_NUM
@@ -348,7 +348,7 @@ def restore_full_freq():
 		APP_FREQ_VEC[app] = HIGHEST_FREQ[APP_SERVER[app]]
 
 def adjust_freq(lat_vec):
-	print('adjust_freq')
+	print 'adjust_freq'
 	global APP_FREQ_VEC
 	global APP_CORE_NUM
 
@@ -383,7 +383,7 @@ def adjust_freq(lat_vec):
 		return False
 
 def adjust_freq_observe(lat_vec):
-	print('adjust_freq')
+	print 'adjust_freq'
 	global APP_FREQ_VEC
 	global APP_CORE_NUM
 
@@ -402,7 +402,7 @@ def adjust_freq_observe(lat_vec):
 			APP_FREQ_VEC[app] += FREQ_RESO[APP_SERVER[app]]
 
 def adjust_freq_viol(lat_vec):
-	print('adjust_freq_viol')
+	print 'adjust_freq_viol'
 	global APP_FREQ_VEC
 	global APP_SERVER
 	global HIGHEST_FREQ
@@ -451,8 +451,8 @@ def get_stats():
 			sim_round				= int(data[4].split(':')[1])
 			if sim_round == CUR_ROUND:
 				CUR_QPS				= int(data[3].split(':')[1])
-				print('CUR_QPS = ', CUR_QPS)
-				print(data)
+				print 'CUR_QPS = ', CUR_QPS
+				print data
 				get_qps_range()
 				# CUR_ROUND += 1
 				round_match = True
@@ -467,8 +467,8 @@ def get_stats():
 		return None
 	# show lat_vec
 	for key in lat_vec:
-		print(key, ':', float(lat_vec[key]), ';', end=' ')
-	print('')
+		print key, ':', float(lat_vec[key]), ';',
+	print ''
 	return lat_vec
 
 def pars_config():
@@ -501,9 +501,9 @@ def pars_config():
 				assert server in IP_ADDR	
 				PORTS[server] = int(words[1])
 
-	print(APP_SERVER)
-	print(SERVER_APP)
-	print(PORTS)
+	print APP_SERVER
+	print SERVER_APP
+	print PORTS
 
 # def connect():
 # 	global IP_ADDR
@@ -560,10 +560,10 @@ def show_freq_vec():
 	return string
 
 def help():
-	print('1st: RUN_TIME (s)')
-	print('2nd: INTERVAL (s)')
-	print('3rd: target (ms)')
-	print('4th: config file path (optional)')
+	print '1st: RUN_TIME (s)'
+	print '2nd: INTERVAL (s)'
+	print '3rd: target (ms)'
+	print '4th: config file path (optional)'
 
 # interval: monitor interval (s)
 # target: target tail lat (ms)
@@ -601,7 +601,7 @@ def main():
 	RUN_TIME = int(sys.argv[1])
 	INTERVAL = float(sys.argv[2])
 	TOTAL_ROUND = int(RUN_TIME/INTERVAL)
-	print('TOTAL_ROUND = ', TOTAL_ROUND)
+	print 'TOTAL_ROUND = ', TOTAL_ROUND
 	# target in millisecond, change into ns
 	target = int(sys.argv[3]) * 1000000.0
 	init_online_graphs(target)
@@ -628,8 +628,8 @@ def main():
 		if CUR_ROUND >= TOTAL_ROUND:
 			break	# terminate
 
-		print("\nAt time: %f" %((CUR_ROUND + 1) * INTERVAL))
-		print('CUR_ROUND = ', CUR_ROUND)
+		print "\nAt time: %f" %((CUR_ROUND + 1) * INTERVAL)
+		print 'CUR_ROUND = ', CUR_ROUND
 		stats = None
 		while True:
 			stats = get_stats()
@@ -640,29 +640,29 @@ def main():
 
 		# simulator output stats in ns
 		end2end_lat = stats['end2end']
-		print('end2end_lat = ', float(end2end_lat)/1000000.0, ' ms')
+		print 'end2end_lat = ', float(end2end_lat)/1000000.0, ' ms'
 		del stats['end2end']
 
 		qos_viol = False
 		explore = False
 		if end2end_lat > target:
-			print('qos violated')
+			print 'qos violated'
 			qos_viol = True
 		else:
-			print('qos met')
+			print 'qos met'
 			new_point = GraphPoint(end2end_lat, stats)
 			explore = insert_new_point(new_point)
-			print('new point explore = ', explore)
+			print 'new point explore = ', explore
 			if explore:
 				graph_idx = get_graph_idx(end2end_lat)
 				explore   = probablistic_accpet(ONLINE_GRAPHS[graph_idx].probability)
-				print('new point final explore = ', explore)
+				print 'new point final explore = ', explore
 
 		if SCHED_STATE == 'NORMAL':
-			print('NORMAL')
+			print 'NORMAL'
 			assert CUR_OPT_POINT != None
-			print('CUR_GRAPH_IDX changed = ', CUR_GRAPH_IDX)
-			print('current_optimal_graph: [', QOS_SLOT_STEP*CUR_GRAPH_IDX/1000.0, ', ', QOS_SLOT_STEP*(CUR_GRAPH_IDX+1)/1000.0, ']')
+			print 'CUR_GRAPH_IDX changed = ', CUR_GRAPH_IDX
+			print 'current_optimal_graph: [', QOS_SLOT_STEP*CUR_GRAPH_IDX/1000.0, ', ', QOS_SLOT_STEP*(CUR_GRAPH_IDX+1)/1000.0, ']'
 
 			ONLINE_GRAPHS[CUR_GRAPH_IDX].viol_stats['run_time'] += 1
 			if qos_viol:
@@ -675,14 +675,14 @@ def main():
 					ONLINE_GRAPHS[VIOL_GRAPH_IDX].delete(VIOL_POINT)
 					adjust_graph_probability(VIOL_GRAPH_IDX, False)
 				else:
-					print('no punishment for point since load changed')
+					print 'no punishment for point since load changed'
 					VIOL_POINT 	   = None
 					VIOL_GRAPH_IDX = -1
 				QPS_EXPERIENCE = []
 				graph_found = get_optimal_graph(False)
 				if graph_found:
-					print('CUR_GRAPH_IDX changed to ', CUR_GRAPH_IDX)
-					print('current_optimal_graph: [', QOS_SLOT_STEP*CUR_GRAPH_IDX/1000.0, ', ', QOS_SLOT_STEP*(CUR_GRAPH_IDX+1)/1000.0, ']')
+					print 'CUR_GRAPH_IDX changed to ', CUR_GRAPH_IDX
+					print 'current_optimal_graph: [', QOS_SLOT_STEP*CUR_GRAPH_IDX/1000.0, ', ', QOS_SLOT_STEP*(CUR_GRAPH_IDX+1)/1000.0, ']'
 					ONLINE_GRAPHS[CUR_GRAPH_IDX].get_optimal_point(stats)
 				else:
 					CUR_GRAPH_IDX = -1
@@ -706,8 +706,8 @@ def main():
 							POINT_STATIC_COUNTER = POINT_STATIC_CYCLE
 							graph_found = get_optimal_graph(True)
 							assert graph_found
-							print('CUR_GRAPH_IDX changed to ', CUR_GRAPH_IDX)
-							print('current_optimal_graph: [', QOS_SLOT_STEP*CUR_GRAPH_IDX/1000.0, ', ', QOS_SLOT_STEP*(CUR_GRAPH_IDX+1)/1000.0, ']')
+							print 'CUR_GRAPH_IDX changed to ', CUR_GRAPH_IDX
+							print 'current_optimal_graph: [', QOS_SLOT_STEP*CUR_GRAPH_IDX/1000.0, ', ', QOS_SLOT_STEP*(CUR_GRAPH_IDX+1)/1000.0, ']'
 							ONLINE_GRAPHS[CUR_GRAPH_IDX].get_optimal_point(stats)
 						adjust_freq(stats)
 					else:
@@ -715,18 +715,18 @@ def main():
 
 		elif SCHED_STATE == 'EXPLORE':
 			# while in explore stage the optimal point should not be decided
-			print('EXPLORE')
+			print 'EXPLORE'
 			if qos_viol:
 				SCHED_STATE = 'RECOVER'
 				if len(QPS_EXPERIENCE) == 1:
 					VIOL_GRAPH_IDX = OBSERVE_GRAPH_IDX
 				else:
-					print('no punishment for point since load changed')
+					print 'no punishment for point since load changed'
 					VIOL_GRAPH_IDX = -1
 				graph_found = get_optimal_graph(False)
 				if graph_found:
-					print('CUR_GRAPH_IDX = ', CUR_GRAPH_IDX)
-					print('current_optimal_graph: [', QOS_SLOT_STEP*CUR_GRAPH_IDX/1000.0, ', ', QOS_SLOT_STEP*(CUR_GRAPH_IDX+1)/1000.0, ']')
+					print 'CUR_GRAPH_IDX = ', CUR_GRAPH_IDX
+					print 'current_optimal_graph: [', QOS_SLOT_STEP*CUR_GRAPH_IDX/1000.0, ', ', QOS_SLOT_STEP*(CUR_GRAPH_IDX+1)/1000.0, ']'
 					ONLINE_GRAPHS[CUR_GRAPH_IDX].get_optimal_point(stats)
 				QPS_EXPERIENCE = []
 			else:
@@ -737,7 +737,7 @@ def main():
 					random_slowdown(end2end_lat)
 				
 		elif SCHED_STATE == 'RECOVER':
-			print('RECOVER')
+			print 'RECOVER'
 			if qos_viol:
 				# if VIOL_GRAPH_IDX >= 0:
 				# 	adjust_graph_probability(VIOL_GRAPH_IDX, False)
@@ -751,18 +751,18 @@ def main():
 				graph_found = get_optimal_graph(stats)
 				# at least one point (current one) is inserted
 				assert graph_found
-				print('CUR_GRAPH_IDX = ', CUR_GRAPH_IDX)
-				print('current_optimal_graph: [', QOS_SLOT_STEP*CUR_GRAPH_IDX/1000.0, ', ', QOS_SLOT_STEP*(CUR_GRAPH_IDX+1)/1000.0, ']')
+				print 'CUR_GRAPH_IDX = ', CUR_GRAPH_IDX
+				print 'current_optimal_graph: [', QOS_SLOT_STEP*CUR_GRAPH_IDX/1000.0, ', ', QOS_SLOT_STEP*(CUR_GRAPH_IDX+1)/1000.0, ']'
 				ONLINE_GRAPHS[CUR_GRAPH_IDX].get_optimal_point(stats)
 				adjust_freq(stats)
 				
 		else:
-			print('Undefined State: ', SCHED_STATE)
+			print 'Undefined State: ', SCHED_STATE
 			exit(0)
 
 		send_cmd()
-		print('new freq_vec')
-		print(show_freq_vec())
+		print 'new freq_vec'
+		print show_freq_vec()
 
 
 if __name__ == '__main__':

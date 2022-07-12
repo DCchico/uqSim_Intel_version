@@ -1,1 +1,1 @@
-end2end: 315573; nginx: 65073; memcached :42541; cur_qps: 10000; cur_round: 6
+end2end: 316785; nginx: 53250; memcached :44610; cur_qps: 10000; cur_round: 59

@@ -1,0 +1,173 @@
+{
+  "type": "micro_service",
+  "service_name": "memcached",
+  "bind_connection": true,
+  "paths": [
+    {
+      "code_path_id": 0,
+      "stages": [
+        {
+          "stage_name": "epoll",
+          "code_path_id": 0,
+          "path_stage_id": 0,
+          "stage_id": 0,
+          "blocking": false,
+          "batching": true,
+          "socket": false,
+          "epoll": false,
+          "ngx_proc": false,
+          "net": false,
+          "chunk": false,
+          "recv_time_model": {
+            "type": "expo",
+            "latency": 1500
+          },
+          "scale_factor": 0.55,
+          "critical_section": false
+        },
+        {
+          "stage_name": "socket",
+          "code_path_id": 0,
+          "path_stage_id": 1,
+          "stage_id": 1,
+          "blocking": false,
+          "batching": true,
+          "socket": true,
+          "epoll": false,
+          "ngx_proc": false,
+          "net": false,
+          "chunk": false,
+          "recv_time_model": {
+            "type": "expo",
+            "latency": 1500
+          },
+          "scale_factor": 0.35,
+          "critical_section": false
+        },
+        {
+          "stage_name": "proc_read",
+          "code_path_id": 0,
+          "path_stage_id": 2,
+          "stage_id": 2,
+          "blocking": false,
+          "batching": false,
+          "socket": false,
+          "epoll": false,
+          "ngx_proc": false,
+          "net": false,
+          "chunk": false,
+          "recv_time_model": {
+            "type": "expo",
+            "latency": 600
+          },
+          "scale_factor": 0.45,
+          "critical_section": false
+        },
+        {
+          "stage_name": "send",
+          "code_path_id": 0,
+          "path_stage_id": 3,
+          "stage_id": 3,
+          "blocking": false,
+          "batching": false,
+          "socket": false,
+          "epoll": false,
+          "ngx_proc": false,
+          "net": true,
+          "chunk": false,
+          "recv_time_model": {
+            "type": "expo",
+            "latency": 7500
+          },
+          "scale_factor": 0.3,
+          "critical_section": false
+        }
+      ],
+      "num_stages": 4
+    },
+    {
+      "code_path_id": 1,
+      "stages": [
+        {
+          "stage_name": "epoll",
+          "code_path_id": 1,
+          "path_stage_id": 0,
+          "stage_id": 0,
+          "blocking": false,
+          "batching": true,
+          "socket": false,
+          "epoll": false,
+          "ngx_proc": false,
+          "net": false,
+          "chunk": false,
+          "recv_time_model": {
+            "type": "expo",
+            "latency": 1500
+          },
+          "scale_factor": 0.55,
+          "critical_section": false
+        },
+        {
+          "stage_name": "socket",
+          "code_path_id": 1,
+          "path_stage_id": 1,
+          "stage_id": 4,
+          "blocking": false,
+          "batching": false,
+          "socket": false,
+          "epoll": false,
+          "ngx_proc": false,
+          "net": false,
+          "chunk": false,
+          "recv_time_model": {
+            "type": "expo",
+            "latency": 6000
+          },
+          "scale_factor": 0.35,
+          "critical_section": false
+        },
+        {
+          "stage_name": "proc_write",
+          "code_path_id": 1,
+          "path_stage_id": 2,
+          "stage_id": 5,
+          "blocking": false,
+          "batching": false,
+          "socket": false,
+          "epoll": false,
+          "ngx_proc": false,
+          "net": false,
+          "chunk": false,
+          "recv_time_model": {
+            "type": "expo",
+            "latency": 400
+          },
+          "scale_factor": 0.45,
+          "critical_section": false
+        },
+        {
+          "stage_name": "send",
+          "code_path_id": 1,
+          "path_stage_id": 3,
+          "stage_id": 6,
+          "blocking": false,
+          "batching": false,
+          "socket": false,
+          "epoll": false,
+          "ngx_proc": false,
+          "net": true,
+          "chunk": false,
+          "recv_time_model": {
+            "type": "expo",
+            "latency": 13000
+          },
+          "scale_factor": 0.3,
+          "critical_section": false
+        }
+      ],
+      "num_stages": 4
+    }
+  ],
+  "base_freq": 2600,
+  "cur_freq": 2600
+}

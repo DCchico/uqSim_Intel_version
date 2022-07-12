@@ -1,0 +1,5 @@
+app:nginx ath3 8
+app:memcached ath5 4
+app:compose_post ath1 6
+app:user ath1 2
+server:ath8 40001

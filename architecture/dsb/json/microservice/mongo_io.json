@@ -1,0 +1,39 @@
+{
+  "type": "micro_service",
+  "service_name": "mongo_io",
+  "bind_connection": false,
+  "paths": [
+    {
+      "code_path_id": 0,
+      "probability": 100,
+      "stages": [
+        {
+          "stage_name": "disk_io",
+          "code_path_id": 0,
+          "path_stage_id": 0,
+          "stage_id": 0,
+          "blocking": false,
+          "batching": false,
+          "socket": false,
+          "epoll": false,
+          "ngx_proc": false,
+          "net": false,
+          "chunk": true,
+          "recv_time_model": {
+            "type": "expo",
+            "latency": 5000000
+          },
+          "scale_factor": 0.0,
+          "chunk_model": {
+            "type": "expo",
+            "number": 2
+          },
+          "critical_section": false
+        }
+      ],
+      "num_stages": 1
+    }
+  ],
+  "base_freq": 2600,
+  "cur_freq": 2600
+}
